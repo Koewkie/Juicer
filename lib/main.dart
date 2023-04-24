@@ -58,6 +58,8 @@ class MyCustomFormState extends State<MyCustomForm> {
   double flavour = 0;
   double nic = 0;
   double PG = 0;
+  double NicShot = 0;
+  double NicStrength = 0;
 
   Widget build(BuildContext context) {
     return Form(
@@ -80,30 +82,19 @@ class MyCustomFormState extends State<MyCustomForm> {
                   volume = double.parse(value);
                   VG = volume / 2;
                   flavour = volume * 0.1;
-                  nic = volume * 0.167;
-                  PG = VG - nic - flavour;
-                  print(volume);
-                  print(VG);
-                  print(flavour);
-                  print(nic);
-                  print(PG);
-                  getVG();
                   return null;
                 },
               ),
             ),
+            _buildStrength(),
+            _buildNic(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
               child: ElevatedButton(
                 onPressed: () {
                   _formKey.currentState!.validate();
-                  // if (_formKey.currentState!.validate()) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(content: Text('Processing Data')),
-                  //   );
-                  // }
                 },
-                child: const Text('Submit'),
+                child: const Text('Calculate'),
               ),
             ),
             Padding(
@@ -140,5 +131,43 @@ class MyCustomFormState extends State<MyCustomForm> {
             ),
           ],
         )));
+  }
+
+  Widget _buildNic() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+      child: TextFormField(
+        decoration: const InputDecoration(
+            border: UnderlineInputBorder(), labelText: "Nicotine Shot (mg/ml)"),
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return "Don't leave empty";
+          }
+          NicShot = double.parse(value);
+          nic = (volume * NicStrength) / NicShot;
+          PG = VG - nic - flavour;
+          getVG();
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildStrength() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+      child: TextFormField(
+        decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            labelText: "Strength of final juice (mg)"),
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return "Don't leave empty";
+          }
+          NicStrength = double.parse(value);
+          return null;
+        },
+      ),
+    );
   }
 }
