@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class favorites extends StatefulWidget {
-  const favorites({super.key});
+class Favorites extends StatefulWidget {
+  const Favorites({super.key});
 
   @override
-  State<favorites> createState() => _favoritesState();
+  State<Favorites> createState() => _FavoritesState();
 }
 
-class _favoritesState extends State<favorites> {
+class _FavoritesState extends State<Favorites> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Favorites')),
+      appBar: AppBar(title: const Text('Favorites')),
     );
   }
 }

@@ -68,7 +68,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return const favorites();
+                  return const Favorites();
                 }));
               },
               style: TextButton.styleFrom(foregroundColor: Colors.white),
