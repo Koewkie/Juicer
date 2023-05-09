@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'favorites.dart';
 
 void main() => runApp(const MyApp());
 
@@ -9,15 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Juicer';
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appTitle,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(appTitle),
-        ),
-        body: const MyCustomForm(),
-      ),
+      home: MyCustomForm(),
     );
   }
 }
@@ -62,76 +58,103 @@ class MyCustomFormState extends State<MyCustomForm> {
   double NicShot = 0;
   double NicStrength = 0;
 
+  @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Juice volume (ml)',
-                ),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Don't leave empty";
-                  }
-                  volume = double.parse(value);
-                  VG = volume / 2;
-                  flavour = volume * 0.1;
-                  return null;
-                },
-              ),
-            ),
-            _buildStrength(),
-            _buildNic(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-              child: ElevatedButton(
-                onPressed: () {
-                  _formKey.currentState!.validate();
-                },
-                child: const Text('Calculate'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
-              child: TextFormField(
-                readOnly: true,
-                controller: _controllerVG,
-                decoration: const InputDecoration(border: OutlineInputBorder()),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
-              child: TextFormField(
-                readOnly: true,
-                controller: _controllerPG,
-                decoration: const InputDecoration(border: OutlineInputBorder()),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
-              child: TextFormField(
-                readOnly: true,
-                controller: _controllerFlav,
-                decoration: const InputDecoration(border: OutlineInputBorder()),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
-              child: TextFormField(
-                readOnly: true,
-                controller: _controllerNic,
-                decoration: const InputDecoration(border: OutlineInputBorder()),
-              ),
-            ),
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Juicer'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return const favorites();
+                }));
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              child: const Text('Favorites'),
+            )
           ],
-        )));
+        ),
+        body: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Juice volume (ml)',
+                    ),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return "Don't leave empty";
+                      }
+                      volume = double.parse(value);
+                      VG = volume / 2;
+                      flavour = volume * 0.1;
+                      return null;
+                    },
+                  ),
+                ),
+                _buildStrength(),
+                _buildNic(),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _formKey.currentState!.validate();
+                    },
+                    child: const Text('Calculate'),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: _controllerVG,
+                    decoration:
+                        const InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: _controllerPG,
+                    decoration:
+                        const InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: _controllerFlav,
+                    decoration:
+                        const InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: _controllerNic,
+                    decoration:
+                        const InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+              ],
+            ))));
   }
 
   Widget _buildNic() {
