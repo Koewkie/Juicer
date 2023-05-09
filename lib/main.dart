@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'favorites.dart';
+import 'package:juicer/utils/database_helper.dart';
 
 void main() => runApp(const MyApp());
 
@@ -151,6 +152,30 @@ class MyCustomFormState extends State<MyCustomForm> {
                     controller: _controllerNic,
                     decoration:
                         const InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final dat = DatabaseHelper.db();
+                      final x = DatabaseHelper.createItem(
+                          'Testing title', 'Testing description');
+                    },
+                    child: const Text('Save'),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      List<Map<String, dynamic>> _journals = [];
+                      _journals = await DatabaseHelper.getItems();
+                      print(_journals[0]);
+                    },
+                    child: const Text('Debug REMOVE AFTER'),
                   ),
                 ),
               ],
