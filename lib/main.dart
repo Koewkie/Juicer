@@ -58,6 +58,8 @@ class MyCustomFormState extends State<MyCustomForm> {
   double PG = 0;
   double NicShot = 0;
   double NicStrength = 0;
+  String title = '';
+  String descripiton = '';
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +85,22 @@ class MyCustomFormState extends State<MyCustomForm> {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Name your juice',
+                    ),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return "Don't leave empty";
+                      }
+                      title = value;
+                    },
+                  ),
+                ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
@@ -159,9 +177,26 @@ class MyCustomFormState extends State<MyCustomForm> {
                       const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                   child: ElevatedButton(
                     onPressed: () {
+                      _formKey.currentState!.validate();
                       final dat = DatabaseHelper.db();
-                      final x = DatabaseHelper.createItem(
-                          'Testing title', 'Testing description');
+                      descripiton = 'Volume: ' +
+                          volume.toStringAsFixed(1) +
+                          'ml\n' +
+                          'Strength: ' +
+                          NicStrength.toStringAsFixed(0) +
+                          'mg\nVG/PG: ' +
+                          VG.toStringAsFixed(1) +
+                          '/' +
+                          PG.toStringAsFixed(1) +
+                          ' (ml)\n' +
+                          'Flavour: ' +
+                          flavour.toStringAsFixed(2) +
+                          'ml\nNicotine: ' +
+                          nic.toStringAsFixed(2) +
+                          'ml (' +
+                          NicShot.toStringAsFixed(2) +
+                          'mg/ml)';
+                      final x = DatabaseHelper.createItem(title, descripiton);
                     },
                     child: const Text('Save'),
                   ),
