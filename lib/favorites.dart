@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juicer/utils/database_helper.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});
@@ -8,7 +9,9 @@ class Favorites extends StatefulWidget {
 }
 
 class _FavoritesState extends State<Favorites> {
-  int count = 2;
+  bool togetlist = true;
+  var setjournal = [];
+  var titles = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,10 +20,22 @@ class _FavoritesState extends State<Favorites> {
     );
   }
 
+  getlist() async {
+    var journal = await DatabaseHelper.getItems();
+    setState(() {
+      setjournal = journal;
+      togetlist = false;
+    });
+  }
+
   ListView getFavList() {
+    if (togetlist) {
+      getlist();
+    }
+
     return ListView.builder(
-      itemCount: count,
-      itemBuilder: (BuildContext context, int position) {
+      itemCount: setjournal.length,
+      itemBuilder: (BuildContext context, int index) {
         return Card(
           color: Colors.white,
           elevation: 2.0,
@@ -28,10 +43,14 @@ class _FavoritesState extends State<Favorites> {
             leading: const CircleAvatar(
               backgroundColor: Colors.deepPurpleAccent,
             ),
-            title: const Text('Placeholder title'),
-            subtitle: const Text('Placeholder subtitle'),
+            title: Text(setjournal[index]['title']),
+            subtitle: Text(setjournal[index]['description']),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                DatabaseHelper.deleteItem(setjournal[index]['id']);
+                getlist();
+                getlist();
+              },
               icon: const Icon(Icons.delete),
               color: Colors.grey,
             ),

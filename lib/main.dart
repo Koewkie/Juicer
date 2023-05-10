@@ -173,7 +173,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                     onPressed: () async {
                       List<Map<String, dynamic>> _journals = [];
                       _journals = await DatabaseHelper.getItems();
+                      print(
+                          '..Length of journal ' + _journals.length.toString());
                       print(_journals[0]);
+                      print(_journals[1]);
+                      print(_journals[2]);
+                      print(_journals[3]);
+                      print(_journals[4]);
+                      print(_journals[5]);
                     },
                     child: const Text('Debug REMOVE AFTER'),
                   ),

@@ -39,4 +39,21 @@ class DatabaseHelper {
     final db = await DatabaseHelper.db();
     return db.query('items', orderBy: "id");
   }
+
+  static Future<void> deleteItem(int id) async {
+    final db = await DatabaseHelper.db();
+    try {
+      await db.delete("items", where: "id = ?", whereArgs: [id]);
+      print("Deleted item");
+    } catch (err) {
+      print("Something went wrong when deleting an item: $err");
+    }
+  }
+
+  static Future<int> getLength() async {
+    final db = await DatabaseHelper.db();
+    List<Map<String, dynamic>> _temp = [];
+    _temp = await getItems();
+    return _temp.length;
+  }
 }
